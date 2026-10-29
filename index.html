@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>John Paul Bugarin</title>
+<meta name="description" content="John Paul Bugarin, SaaS technical support specialist: Shopify app support, WordPress, HTML/CSS/JS and AI-powered support workflows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a "support OS". Hero = live node network that follows the cursor; then a real terminal, a ticket game, tilt cards, timeline, contact. Dark-first navy, teal accent. */
+:root{
+  --bg:#081629; --surface:#10243F; --surface-2:#0C1D35; --line:#24405F;
+  --fg:#EEF3FA; --muted:#9DB0C9; --accent:#2DD4BF; --accent-ink:#04201D; --accent-soft:#0E3A3A;
+  --warn:#FBBF24; --info:#60A5FA; --pink:#F472B6; --bad:#F87171;
+  --f-display:"Sora","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:16px; color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#F2F6FB; --surface:#FFFFFF; --surface-2:#E7EEF7; --line:#C9D5E4;
+  --fg:#0C1A2E; --muted:#475A72; --accent:#0F766E; --accent-ink:#FFFFFF; --accent-soft:#D3F2EC;
+  --warn:#B45309; --info:#1D4ED8; --pink:#BE185D; --bad:#B91C1C; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#F2F6FB; --surface:#FFFFFF; --surface-2:#E7EEF7; --line:#C9D5E4;
+  --fg:#0C1A2E; --muted:#475A72; --accent:#0F766E; --accent-ink:#FFFFFF; --accent-soft:#D3F2EC;
+  --warn:#B45309; --info:#1D4ED8; --pink:#BE185D; --bad:#B91C1C; color-scheme:light }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bg)}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+h2{font-size:clamp(30px,4.4vw,44px);letter-spacing:-.015em}
+.eyebrow{font-family:var(--f-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0}
+.muted{color:var(--muted)}
+section{padding-block:80px;position:relative}
+.sec-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px;max-width:680px}
+
+/* progress + header */
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;width:0;background:var(--accent);z-index:30}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:18px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px transparent}}
+.links{display:flex;gap:4px;align-items:center}
+.links a{color:var(--muted);text-decoration:none;font-size:15px;padding:8px 10px;border-radius:8px}
+.links a:hover{color:var(--fg);background:var(--surface-2)}
+.icon-btn{background:var(--surface);border:1px solid var(--line);color:var(--fg);width:42px;height:42px;border-radius:10px;display:grid;place-items:center;cursor:pointer}
+@media (max-width:760px){ .links a.hide-sm{display:none} }
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+#net{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-in{position:relative;padding-block:96px 84px;max-width:860px;pointer-events:none}
+.hero-in a,.hero-in button{pointer-events:auto}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:13px;background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:999px;margin-bottom:24px}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.hero h1{font-size:clamp(40px,7vw,78px);font-weight:800;letter-spacing:-.03em}
+.rot{display:inline-block;color:var(--accent);position:relative}
+.rot .caret{display:inline-block;width:.08em;height:.9em;background:var(--accent);margin-left:4px;vertical-align:-.08em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.lead{font-size:clamp(17px,2vw,20px);color:var(--muted);max-width:36em;margin:22px 0 0}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{font:600 16px var(--f-body);padding:13px 22px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:46px;transition:transform .15s,border-color .15s}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:hover{border-color:var(--accent)}
+.btn:active{transform:scale(.97)}
+.hint{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);margin-top:28px}
+.stats{display:flex;gap:36px;flex-wrap:wrap;margin-top:40px}
+.stats b{display:block;font-family:var(--f-display);font-size:34px;font-variant-numeric:tabular-nums}
+.stats span{font-size:14px;color:var(--muted)}
+
+/* terminal */
+.term{background:#050E1C;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);color:#D6E2F0}
+.t-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#0A1A30;border-bottom:1px solid #1C3352}
+.t-bar i{width:12px;height:12px;border-radius:50%;display:block}
+.t-bar span{margin-left:10px;font-family:var(--f-mono);font-size:13px;color:#8CA3BF}
+.t-out{height:380px;overflow-y:auto;padding:18px 20px;font-family:var(--f-mono);font-size:14.5px;line-height:1.7}
+.t-out p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.t-out .c{color:#2DD4BF}.t-out .y{color:#FBBF24}.t-out .b{color:#60A5FA}.t-out .m{color:#F472B6}.t-out .d{color:#8CA3BF}
+.t-in{display:flex;align-items:center;gap:10px;padding:12px 20px;border-top:1px solid #1C3352;font-family:var(--f-mono);font-size:14.5px}
+.t-in label{color:#2DD4BF;white-space:nowrap}
+.t-in input{flex:1;min-width:0;background:transparent;border:0;color:#EEF3FA;font:inherit;outline:none;caret-color:#2DD4BF}
+.t-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.t-chips button{font-family:var(--f-mono);font-size:13.5px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;min-height:38px}
+.t-chips button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* game */
+.game{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:20px}
+@media (max-width:860px){ .game{grid-template-columns:minmax(0,1fr)} }
+.board{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;min-width:0;position:relative;overflow:hidden}
+.hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.hud div{background:var(--surface-2);border-radius:10px;padding:10px 12px}
+.hud small{display:block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hud b{font-family:var(--f-display);font-size:24px;font-variant-numeric:tabular-nums}
+@media (max-width:480px){ .hud{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.ticket{background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:18px;min-height:150px;display:flex;flex-direction:column;gap:8px;transition:transform .2s,border-color .2s}
+.ticket.ok{border-color:var(--accent);transform:scale(1.01)}
+.ticket.bad{border-color:var(--bad);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.tk-top{display:flex;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.tk-msg{font-size:18px;font-weight:500;margin:0}
+.tk-from{font-size:14px;color:var(--muted);margin:0}
+.sla{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:auto}
+.sla i{display:block;height:100%;width:100%;background:var(--accent);transition:background .3s}
+.fixes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+.fix{font:600 15px var(--f-body);padding:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface-2);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:58px;text-align:left}
+.fix small{font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(--muted)}
+.fix:hover:not(:disabled){border-color:var(--accent)}
+.fix:disabled{opacity:.5;cursor:default}
+.fix kbd{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--muted);margin-left:auto}
+.overlay{position:absolute;inset:0;background:color-mix(in srgb,var(--surface) 92%,transparent);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
+.overlay h3{font-size:clamp(24px,3.4vw,32px)}
+.overlay p{margin:0;max-width:30em;color:var(--muted)}
+.side{display:flex;flex-direction:column;gap:12px}
+.side .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-family:var(--f-mono);font-size:13px;max-height:220px;overflow-y:auto}
+.log li{display:flex;gap:8px}
+.log .g{color:var(--accent)} .log .r{color:var(--bad)}
+.float{position:absolute;font-family:var(--f-display);font-weight:800;font-size:22px;color:var(--accent);pointer-events:none;animation:up 0.9s forwards}
+@keyframes up{to{transform:translateY(-50px);opacity:0}}
+
+/* skills: tilt cards */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{font:500 15px var(--f-body);padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;perspective:900px}
+.skill{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0;transform-style:preserve-3d;transition:transform .15s ease-out,border-color .2s;overflow:hidden}
+.skill::after{content:"";position:absolute;inset:0;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--accent) 22%,transparent),transparent 60%);opacity:0;transition:opacity .2s;pointer-events:none}
+.skill:hover{border-color:var(--accent)} .skill:hover::after{opacity:1}
+.skill small{font-family:var(--f-mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
+.skill b{font-size:17px}
+.skill span{font-size:15px;color:var(--muted)}
+.lvl{height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:4px}
+.lvl i{display:block;height:100%;background:var(--accent);width:var(--w);transition:width .8s}
+
+/* timeline */
+.tl{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:34px}
+.tl::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl .fill{position:absolute;left:10px;top:6px;width:2px;background:var(--accent);height:0}
+.job{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.job::before{content:"";position:absolute;left:-31px;top:22px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.job.now::before{background:var(--accent)}
+.job>button{width:100%;text-align:left;background:none;border:0;color:var(--fg);font:inherit;padding:16px 18px;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;align-items:baseline}
+.job h3{font-size:19px}
+.job .org{color:var(--muted);font-size:15px}
+.job .when{font-family:var(--f-mono);font-size:13px;color:var(--muted);grid-column:2;grid-row:1;white-space:nowrap}
+.job ul{margin:0;padding:0 18px 16px 38px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:75ch}
+@media (max-width:560px){ .job>button{grid-template-columns:minmax(0,1fr)} .job .when{grid-column:1;grid-row:auto} }
+
+/* contact */
+.contact{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(24px,5vw,52px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:center}
+@media (max-width:820px){ .contact{grid-template-columns:minmax(0,1fr)} }
+.reach{display:flex;flex-direction:column;gap:12px}
+.reach-row{display:flex;align-items:center;gap:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;flex-wrap:wrap}
+.reach-row code{font-family:var(--f-mono);font-size:15px;user-select:all;overflow-wrap:anywhere;flex:1;min-width:0}
+.toast{font-family:var(--f-mono);font-size:13px;color:var(--accent);min-height:1.2em}
+footer{padding-block:32px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><span class="dot"></span>John Paul Bugarin</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#terminal" class="hide-sm">Terminal</a>
+      <a href="#game" class="hide-sm">Play</a>
+      <a href="#skills" class="hide-sm">Skills</a>
+      <a href="#experience" class="hide-sm">Experience</a>
+      <a href="#contact">Contact</a>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch light or dark theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <canvas id="net" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="hero-in">
+        <span class="status"><i></i>Online · open to remote roles in Australian hours</span>
+        <h1>I fix problems for<br><span class="rot"><span id="rotText">Shopify merchants</span><span class="caret"></span></span></h1>
+        <p class="lead">I'm John Paul Bugarin, a SaaS technical support specialist with 13+ years in support. I connect the customer side and the technical side, with Shopify, WordPress, code and AI tools.</p>
+        <div class="cta">
+          <a class="btn primary" href="#game">▶ Play “Beat the SLA”</a>
+          <a class="btn" href="#terminal">&gt;_ Open my terminal</a>
+        </div>
+        <div class="stats">
+          <div><b data-count="13" data-suffix="+">13+</b><span>years in support</span></div>
+          <div><b data-count="30000" data-suffix="+">30,000+</b><span>Shopify stores supported</span></div>
+          <div><b data-count="24" data-prefix="&lt;" data-suffix="h">&lt;24h</b><span>ticket resolution</span></div>
+        </div>
+        <p class="hint">Move your cursor or tap the background. Each node is a ticket I helped close.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="terminal">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Interactive terminal</p>
+        <h2>Ask me anything. Type a command.</h2>
+        <p class="muted">Try <code>help</code>, <code>skills</code> or <code>hire</code>. Tab completes, arrow keys bring back history.</p>
+      </div>
+      <div class="term">
+        <div class="t-bar"><i style="background:#F87171"></i><i style="background:#FBBF24"></i><i style="background:#34D399"></i><span>jp@support-os: ~</span></div>
+        <div class="t-out" id="tOut" aria-live="polite"></div>
+        <form class="t-in" id="tForm" autocomplete="off">
+          <label for="tInput">jp@support-os:~$</label>
+          <input id="tInput" spellcheck="false" aria-label="Terminal command" placeholder="type help">
+        </form>
+      </div>
+      <div class="t-chips" id="tChips"></div>
+    </div>
+  </section>
+
+  <section id="game">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Mini-game</p>
+        <h2>Beat the SLA.</h2>
+        <p class="muted">Tickets keep coming. Route each one to the right fix before its timer runs out. You get 45 seconds. Keys 1–4 work too.</p>
+      </div>
+      <div class="game">
+        <div class="board" id="board">
+          <div class="hud">
+            <div><small>Resolved</small><b id="gScore">0</b></div>
+            <div><small>Streak</small><b id="gStreak">0</b></div>
+            <div><small>CSAT</small><b id="gCsat">100%</b></div>
+            <div><small>Time</small><b id="gTime">45</b></div>
+          </div>
+          <div class="ticket" id="tk">
+            <div class="tk-top"><span id="tkId">#4821 · Live chat</span><span id="tkPri">Priority: High</span></div>
+            <p class="tk-msg" id="tkMsg">“I was charged twice after upgrading my plan.”</p>
+            <p class="tk-from" id="tkFrom">Sarah · Melbourne</p>
+            <div class="sla"><i id="slaBar"></i></div>
+          </div>
+          <div class="fixes" id="fixes"></div>
+          <div class="overlay" id="ov">
+            <h3 id="ovTitle">Your queue is filling up.</h3>
+            <p id="ovText">Read each ticket and pick the right fix. Fast and correct answers raise your score and CSAT.</p>
+            <button class="btn primary" id="startBtn" type="button">Start shift</button>
+          </div>
+        </div>
+        <div class="side">
+          <div class="card">
+            <p class="eyebrow" style="margin-bottom:10px">Shift log</p>
+            <ul class="log" id="log"><li class="muted">No tickets handled yet.</li></ul>
+          </div>
+          <div class="card">
+            <p class="eyebrow" style="margin-bottom:8px">Best score</p>
+            <b id="gBest" style="font-family:var(--f-display);font-size:28px">0</b>
+            <p class="muted" style="margin:6px 0 0;font-size:14px">Saved in this browser.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Skills &amp; tools</p>
+        <h2>The toolkit behind the tickets.</h2>
+      </div>
+      <div class="chips" role="group" aria-label="Filter skills" id="skillChips"></div>
+      <div class="skill-grid" id="skillGrid"></div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Experience</p>
+        <h2>13 years, one thread: solving problems for people.</h2>
+        <p class="muted">Select a role to open it.</p>
+      </div>
+      <div class="tl" id="tl"><span class="fill" id="tlFill"></span></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>Got a queue that needs a steady hand?</h2>
+          <p class="muted">I'm open to remote SaaS technical support, product support and Shopify or WordPress support roles during Australian business hours.</p>
+        </div>
+        <div class="reach">
+          <div class="reach-row">
+            <code id="email">jpaulbugarin@gmail.com</code>
+            <button class="btn" id="copyBtn" type="button">Copy email</button>
+          </div>
+          <span class="toast" id="toast" role="status"></span>
+          <a class="btn primary" href="https://www.linkedin.com/in/john-paul-bugarin" target="_blank" rel="noopener">Connect on LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 John Paul Bugarin · Dagupan, Philippines</span><span>BS Information Technology, University of Pangasinan</span></div>
+</footer>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const root=document.documentElement;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const css=n=>getComputedStyle(root).getPropertyValue(n).trim();
+
+/* theme */
+const saved=store.get('jpb-theme'); if(saved) root.setAttribute('data-theme',saved);
+function toggleTheme(){
+  const cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  const next=cur==='dark'?'light':'dark'; root.setAttribute('data-theme',next); store.set('jpb-theme',next); return next;
+}
+$('themeBtn').addEventListener('click',toggleTheme);
+
+/* scroll progress */
+addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);$('prog').style.width=(p*100)+'%';tlProgress();},{passive:true});
+
+/* hero network */
+const cv=$('net'),cx=cv.getContext('2d');let W=0,H=0,nodes=[],mouse={x:-999,y:-999},bursts=[];
+function size(){const r=cv.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);
+  const n=Math.round(Math.min(90,W*H/14000));nodes=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:1.5+Math.random()*2}));}
+function draw(){
+  cx.clearRect(0,0,W,H);const ac=css('--accent'),ln=css('--line');
+  for(const n of nodes){
+    if(!reduce){n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;}
+    const dx=mouse.x-n.x,dy=mouse.y-n.y,d=Math.hypot(dx,dy);
+    if(d<160&&!reduce){n.x+=dx*.008;n.y+=dy*.008;}
+  }
+  for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+    const a=nodes[i],b=nodes[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d<120){cx.strokeStyle=ln;cx.globalAlpha=1-d/120;cx.lineWidth=1;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.stroke();}
+  }
+  for(const n of nodes){const d=Math.hypot(mouse.x-n.x,mouse.y-n.y);
+    if(d<170){cx.strokeStyle=ac;cx.globalAlpha=(1-d/170)*.9;cx.beginPath();cx.moveTo(n.x,n.y);cx.lineTo(mouse.x,mouse.y);cx.stroke();}
+    cx.globalAlpha=d<170?1:.55;cx.fillStyle=ac;cx.beginPath();cx.arc(n.x,n.y,n.r,0,7);cx.fill();}
+  bursts=bursts.filter(b=>b.t<1);for(const b of bursts){b.t+=.025;cx.globalAlpha=1-b.t;cx.strokeStyle=ac;cx.lineWidth=2;cx.beginPath();cx.arc(b.x,b.y,8+b.t*70,0,7);cx.stroke();}
+  cx.globalAlpha=1;requestAnimationFrame(draw);
+}
+const hero=cv.parentElement;
+hero.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
+hero.addEventListener('pointerleave',()=>{mouse.x=mouse.y=-999;});
+hero.addEventListener('pointerdown',e=>{if(e.target.closest('a,button'))return;const r=cv.getBoundingClientRect();const x=e.clientX-r.left,y=e.clientY-r.top;bursts.push({x,y,t:0});
+  for(let i=0;i<3;i++)nodes.push({x,y,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,r:2+Math.random()*2});if(nodes.length>140)nodes.splice(0,3);});
+addEventListener('resize',size);size();draw();
+
+/* rotating words */
+const words=['Shopify merchants','SaaS customers','WordPress clients','billing headaches','broken storefronts','slow workflows, with AI'];
+let wi=0;const rt=$('rotText');
+function typeWord(){ if(reduce)return; const w=words[wi];let i=0,del=false;
+  const iv=setInterval(()=>{
+    if(!del){i++;rt.textContent=w.slice(0,i);if(i===w.length){del=true;clearInterval(iv);setTimeout(()=>{const dv=setInterval(()=>{i--;rt.textContent=w.slice(0,i);if(i===0){clearInterval(dv);wi=(wi+1)%words.length;typeWord();}},30);},1600);}}
+  },55);}
+setTimeout(()=>{wi=1;typeWord();},2200);
+
+/* counters */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting||reduce)return;const b=e.target;io.unobserve(b);const to=+b.dataset.count,pre=b.dataset.prefix?'<':'',suf=b.dataset.suffix||'';let t0=null;
+  const step=ts=>{t0=t0||ts;const p=Math.min(1,(ts-t0)/1200);b.textContent=pre+Math.round(to*(1-Math.pow(1-p,3))).toLocaleString()+suf;if(p<1)requestAnimationFrame(step);};requestAnimationFrame(step);}),{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(b=>io.observe(b));
+
+/* terminal */
+const out=$('tOut'),inp=$('tInput');const hist=[];let hi=0;
+const say=(html,cls)=>{const p=document.createElement('p');if(cls)p.className=cls;p.innerHTML=html;out.appendChild(p);out.scrollTop=out.scrollHeight;};
+const C={
+  help:()=>say(`<span class="y">Available commands</span>
+  <span class="c">whoami</span>      who I am
+  <span class="c">skills</span>      what I'm good at
+  <span class="c">experience</span>  where I've worked
+  <span class="c">ai</span>          how I use Claude, ChatGPT, Grok and MCP
+  <span class="c">projects</span>    things I've built
+  <span class="c">ticket</span>      watch me solve a random ticket
+  <span class="c">hire</span>        why you should hire me
+  <span class="c">contact</span>     how to reach me
+  <span class="c">theme</span>       switch light/dark
+  <span class="c">game</span>        jump to Beat the SLA
+  <span class="c">clear</span>       clear the screen`),
+  whoami:()=>say(`<span class="c">John Paul Bugarin</span> · SaaS Technical Support Specialist
+Based in Dagupan, Philippines · remote · Australian business hours
+13+ years across SaaS support, Shopify, WordPress and web development.
+I understand the customer side <span class="d">and</span> the technical side of a problem.`),
+  skills:()=>say(`<span class="y">support</span>   billing · refunds · subscriptions · troubleshooting · bug reports
+<span class="y">ecom</span>      Shopify app support · themes · integrations · storefront fixes
+<span class="y">web</span>       WordPress · Bricks Builder · HTML · CSS · JavaScript · cPanel
+<span class="y">ai</span>        Claude · ChatGPT · Grok · prompt writing · MCP integrations
+<span class="y">tools</span>     Help Scout · Zendesk · Freshdesk · Zoho CRM · Trello · Asana`),
+  experience:()=>say(`<span class="c">2021–now</span>   Merchant Support Analyst · VITALS (Shopify app, 30,000+ stores)
+<span class="c">2019–2025</span>  WordPress Web Designer · Mindsaw
+<span class="c">2018–2020</span>  Virtual Assistant · OSP International LLC
+<span class="c">2014–2017</span>  Web Designer · MyMediaPal.com
+<span class="c">2013–2018</span>  Product Engineer · Zendesk Chat (formerly Zopim)`),
+  ai:()=>say(`<span class="m">How AI fits into my support work</span>
+→ summarize long ticket threads before replying
+→ think through causes of odd product behavior before escalating
+→ check tone and clarity of technical replies
+→ write and debug HTML, CSS and JavaScript faster
+→ connect AI assistants to WordPress sites through <span class="c">MCP</span>
+<span class="d">Rule: AI drafts, I check. Every reply gets a human review.</span>`),
+  projects:()=>say(`<span class="y">1</span> WordPress sites for local businesses   <span class="d">responsive · SEO · client-editable</span>
+<span class="y">2</span> Shopify app &amp; theme troubleshooting    <span class="d">setup · conflicts · integrations</span>
+<span class="y">3</span> AI assistant on a Bricks Builder site  <span class="d">connected through MCP</span>
+<span class="y">4</span> Custom storefront fixes                <span class="d">HTML · CSS · JS</span>
+<span class="d">[project links coming soon]</span>`),
+  hire:()=>say(`<span class="c">✔</span> 13+ years of support, so tricky customers don't rattle me
+<span class="c">✔</span> I investigate before I escalate, so engineering gets clean cases
+<span class="c">✔</span> I can read the code, so fixes happen faster
+<span class="c">✔</span> I use AI well, and I check its work
+<span class="c">✔</span> I work your hours (Australian business day)
+Run <span class="c">contact</span> to reach me.`),
+  contact:()=>say(`email     <span class="c">${$('email').textContent}</span>
+linkedin  <a href="https://www.linkedin.com/in/john-paul-bugarin" target="_blank" rel="noopener">linkedin.com/in/john-paul-bugarin</a>`),
+  theme:()=>say('theme set to <span class="c">'+toggleTheme()+'</span>'),
+  game:()=>{say('opening Beat the SLA…','d');$('game').scrollIntoView();},
+  clear:()=>{out.innerHTML='';},
+  ticket:()=>{const t=pool[Math.floor(Math.random()*pool.length)];const f=FIX[t.k];
+    say(`<span class="y">incoming</span> "${t.m}"
+<span class="b">diagnose</span> → ${f.diag}
+<span class="b">action</span>   → ${f.act}
+<span class="c">✔ resolved</span> · customer notified · notes added to KB`);},
+  sudo:a=>say(a.join(' ').includes('hire')?'<span class="c">permission granted.</span> Great choice. Run <span class="c">contact</span>.':'nice try. Try <span class="c">sudo hire jp</span>'),
+  ls:()=>say('about.txt  skills/  experience.log  projects/  contact.vcf'),
+  date:()=>say(new Date().toString())
+};
+function run(raw){const v=raw.trim();say('<span class="c">jp@support-os:~$</span> '+v.replace(/</g,'&lt;'));if(!v)return;hist.push(v);hi=hist.length;
+  const [cmd,...args]=v.toLowerCase().split(/\s+/);(C[cmd]?C[cmd](args):say(`command not found: ${cmd.replace(/</g,'&lt;')}. Type <span class="c">help</span>.`,''));}
+$('tForm').addEventListener('submit',e=>{e.preventDefault();run(inp.value);inp.value='';});
+inp.addEventListener('keydown',e=>{
+  if(e.key==='ArrowUp'){if(hi>0){hi--;inp.value=hist[hi];}e.preventDefault();}
+  else if(e.key==='ArrowDown'){if(hi<hist.length-1){hi++;inp.value=hist[hi];}else{hi=hist.length;inp.value='';}e.preventDefault();}
+  else if(e.key==='Tab'){const m=Object.keys(C).filter(k=>k.startsWith(inp.value.trim()));if(m.length===1){inp.value=m[0];}else if(m.length>1){say(m.join('  '),'d');}e.preventDefault();}
+});
+$('tOut').addEventListener('click',()=>inp.focus({preventScroll:true}));
+['help','whoami','skills','ai','ticket','hire','contact'].forEach(c=>{const b=document.createElement('button');b.type='button';b.textContent=c;b.addEventListener('click',()=>run(c));$('tChips').appendChild(b);});
+say(`<span class="c">support-os v13.0</span> · logged in as recruiter
+Welcome. This terminal answers questions about John Paul.
+Type <span class="c">help</span> or tap a command below.`);
+C.whoami();
+
+/* game */
+const FIX={
+  billing:{n:'Billing & refund',s:'refunds, plans, invoices',diag:'check subscription + invoice history',act:'refund duplicate / adjust plan cycle'},
+  shopify:{n:'Shopify app fix',s:'app setup, theme conflicts',diag:'inspect theme + app embed settings',act:'fix selector / reconfigure app'},
+  wp:{n:'WordPress fix',s:'site down, plugins, layout',diag:'isolate plugin/theme, check errors',act:'roll back / patch, then test'},
+  bug:{n:'Escalate bug',s:'reproduce, document, send to dev',diag:'reproduce + capture logs',act:'clean bug report to engineering'}
+};
+const keys=['billing','shopify','wp','bug'];
+const pool=[
+  {k:'billing',m:'I was charged twice after upgrading my plan.'},{k:'billing',m:'Can I get a refund? I cancelled yesterday.'},
+  {k:'billing',m:'My invoice shows the wrong plan.'},{k:'billing',m:'Why did my price change this month?'},
+  {k:'shopify',m:'The sales popup isn’t showing on my product page.'},{k:'shopify',m:'Your app broke my theme’s add-to-cart button.'},
+  {k:'shopify',m:'Reviews widget looks wrong on mobile.'},{k:'shopify',m:'How do I connect the app to my Klaviyo account?'},
+  {k:'wp',m:'My website shows a white screen after an update.'},{k:'wp',m:'The contact form stopped sending emails.'},
+  {k:'wp',m:'Homepage layout is broken on phones.'},{k:'wp',m:'A plugin update locked me out of wp-admin.'},
+  {k:'bug',m:'Export button does nothing in Chrome, works in Firefox.'},{k:'bug',m:'Dashboard numbers don’t match the CSV export.'},
+  {k:'bug',m:'Settings reset every time I save.'},{k:'bug',m:'Error 500 when I upload a product image.'}
+];
+const names=['Sarah · Melbourne','Liam · Sydney','Priya · Brisbane','Tom · Perth','Chloe · Adelaide','Noah · Auckland','Mia · Gold Coast','Jack · Hobart'];
+const chans=['Live chat','Email','Ticket'];
+let G={on:false,score:0,streak:0,good:0,total:0,time:45,cur:null,sla:0,slaMax:0,raf:0,tick:0,id:4821};
+const fixesEl=$('fixes');
+keys.forEach((k,i)=>{const b=document.createElement('button');b.type='button';b.className='fix';b.id='fix-'+k;b.disabled=true;
+  b.innerHTML=`<span style="display:flex;width:100%;gap:8px">${FIX[k].n}<kbd>${i+1}</kbd></span><small>${FIX[k].s}</small>`;
+  b.addEventListener('click',()=>answer(k,b));fixesEl.appendChild(b);});
+$('gBest').textContent=store.get('jpb-best')||0;
+function setBtns(on){[...fixesEl.children].forEach(b=>b.disabled=!on);}
+function hud(){$('gScore').textContent=G.score;$('gStreak').textContent=G.streak;$('gCsat').textContent=(G.total?Math.round(G.good/G.total*100):100)+'%';$('gTime').textContent=Math.ceil(G.time);}
+function nextTicket(){
+  const t=pool[Math.floor(Math.random()*pool.length)];G.cur=t;G.id++;
+  const pri=Math.random()<.35?'Urgent':Math.random()<.6?'High':'Normal';
+  G.slaMax=pri==='Urgent'?3.2:pri==='High'?4.5:6;G.sla=G.slaMax;
+  $('tkId').textContent='#'+G.id+' · '+chans[G.id%3];$('tkPri').textContent='Priority: '+pri;
+  $('tkMsg').textContent='“'+t.m+'”';$('tkFrom').textContent=names[Math.floor(Math.random()*names.length)];
+  $('tk').className='ticket';
+}
+function logLine(ok,txt){const l=$('log');if(l.querySelector('.muted'))l.innerHTML='';const li=document.createElement('li');li.innerHTML=`<span class="${ok?'g':'r'}">${ok?'✔':'✖'}</span><span>${txt}</span>`;l.prepend(li);}
+function pop(txt){const s=document.createElement('span');s.className='float';s.textContent=txt;s.style.left=(40+Math.random()*50)+'%';s.style.top='140px';$('board').appendChild(s);setTimeout(()=>s.remove(),900);}
+function answer(k,btn){
+  if(!G.on)return;G.total++;
+  if(k===G.cur.k){G.streak++;G.good++;const pts=10+Math.round(G.sla/G.slaMax*10)+Math.min(G.streak,10);G.score+=pts;$('tk').classList.add('ok');pop('+'+pts);logLine(true,'#'+G.id+' '+FIX[k].n);}
+  else{G.streak=0;$('tk').classList.add('bad');logLine(false,'#'+G.id+' wrong fix ('+FIX[G.cur.k].n+')');}
+  hud();setBtns(false);setTimeout(()=>{if(G.on){nextTicket();setBtns(true);}},380);
+}
+function loop(ts){
+  if(!G.on)return;const dt=G.tick?(ts-G.tick)/1000:0;G.tick=ts;
+  G.time-=dt;G.sla-=dt;
+  const p=Math.max(0,G.sla/G.slaMax);const bar=$('slaBar');bar.style.width=(p*100)+'%';bar.style.background=p>.5?css('--accent'):p>.25?css('--warn'):css('--bad');
+  if(G.sla<=0){G.total++;G.streak=0;logLine(false,'#'+G.id+' missed SLA');$('tk').classList.add('bad');hud();nextTicket();}
+  if(G.time<=0){end();return;}
+  hud();G.raf=requestAnimationFrame(loop);
+}
+function start(){G={on:true,score:0,streak:0,good:0,total:0,time:45,cur:null,sla:0,slaMax:0,raf:0,tick:0,id:4820};$('log').innerHTML='<li class="muted">Shift started.</li>';
+  $('ov').hidden=true;nextTicket();setBtns(true);hud();G.raf=requestAnimationFrame(loop);}
+function end(){G.on=false;setBtns(false);cancelAnimationFrame(G.raf);const csat=G.total?Math.round(G.good/G.total*100):0;
+  const best=Math.max(+(store.get('jpb-best')||0),G.score);store.set('jpb-best',best);$('gBest').textContent=best;
+  $('ovTitle').textContent=`Shift over: ${G.good} resolved, ${csat}% CSAT`;
+  $('ovText').textContent=G.score>=best&&G.score>0?`New best: ${G.score} points. I handle queues like this every day, with real customers. Want me on your team?`:`${G.score} points. I handle queues like this every day, with real customers. Want me on your team?`;
+  $('startBtn').textContent='Play again';$('ov').hidden=false;
+  if(!$('hireLink')){const a=document.createElement('a');a.id='hireLink';a.className='btn';a.href='#contact';a.textContent='Hire the real one →';$('ov').appendChild(a);}
+}
+$('startBtn').addEventListener('click',start);
+addEventListener('keydown',e=>{if(!G.on||document.activeElement===inp)return;const i=['1','2','3','4'].indexOf(e.key);if(i>-1){answer(keys[i]);}});
+
+/* skills */
+const skills=[
+  ['Support','Billing & refunds','Subscriptions, plan changes, account reviews',95],
+  ['Support','Technical troubleshooting','Reproduce, isolate, fix or escalate',92],
+  ['Support','Bug documentation','Clear reports engineering can act on',90],
+  ['Support','Help Scout · Zendesk · Freshdesk','Email, ticket and live chat',94],
+  ['E-commerce','Shopify app support','Setup, themes, third-party integrations',93],
+  ['E-commerce','Storefront fixes','Custom HTML, CSS and JavaScript',85],
+  ['Web','WordPress & Bricks Builder','Responsive builds, plugins, upkeep',90],
+  ['Web','HTML · CSS · JavaScript','Udemy: JavaScript Complete Guide 2025',82],
+  ['Web','cPanel & hosting','Installs, domains and site setup',80],
+  ['AI','Claude · ChatGPT · Grok','Summaries, research, drafting, debugging',88],
+  ['AI','MCP integrations','Connecting AI assistants to websites',78],
+  ['AI','Prompt writing','Reliable, reviewable outputs',85],
+  ['Tools','Trello · Asana','Project and task tracking',85],
+  ['Tools','Google Workspace · Office','Docs, sheets and reporting',88],
+  ['Tools','Photoshop','Website graphics and visual assets',75]
+];
+const sg=$('skillGrid');
+function renderSkills(cat){
+  sg.innerHTML=skills.filter(s=>cat==='All'||s[0]===cat).map(s=>`<div class="skill"><small>${s[0]}</small><b>${s[1]}</b><span>${s[2]}</span><div class="lvl" aria-hidden="true"><i style="--w:${s[3]}%"></i></div></div>`).join('');
+  sg.querySelectorAll('.skill').forEach(el=>{
+    el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+      el.style.setProperty('--mx',x*100+'%');el.style.setProperty('--my',y*100+'%');if(!reduce)el.style.transform=`rotateX(${(.5-y)*10}deg) rotateY(${(x-.5)*12}deg) translateZ(6px)`;});
+    el.addEventListener('pointerleave',()=>{el.style.transform='';});
+  });
+}
+const sc=$('skillChips');
+['All','Support','E-commerce','Web','AI','Tools'].forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.className='chip';b.id='sk-'+i;b.textContent=c;b.setAttribute('aria-pressed',i===0);
+  b.addEventListener('click',()=>{[...sc.children].forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');renderSkills(c);});sc.appendChild(b);});
+renderSkills('All');
+
+/* timeline */
+const jobs=[
+  {t:'Merchant Support Analyst',o:'VITALS · Shopify app · Remote',w:'Mar 2021 – Present',now:1,b:['Support merchants using the VITALS Shopify app across 30,000+ stores by email, chat and ticket.','Diagnose app setup, theme and third-party integration issues.','Escalate technical problems to engineering and follow up until resolved.','Maintain sub-24-hour ticket resolution in Help Scout.','Flag recurring issues to guide product and stability improvements.']},
+  {t:'WordPress Web Designer',o:'Mindsaw · Remote',w:'Jun 2019 – Jan 2025',b:['Designed and built responsive WordPress sites for local businesses.','Configured plugins for forms, sliders, SEO and more.','Handled builds end to end, from wireframes to launch.','Built sites non-technical clients could manage themselves.']},
+  {t:'Virtual Assistant',o:'OSP International LLC',w:'Mar 2018 – Sep 2020',b:['Handled technical support tickets for customers’ purchased products.','Troubleshot issues and guided customers to a working solution.']},
+  {t:'Web Designer',o:'MyMediaPal.com',w:'Feb 2014 – Sep 2017',b:['Designed and built WordPress websites with custom graphics.','Managed cPanel and hosting installations.']},
+  {t:'Product Engineer',o:'Zendesk Chat (formerly Zopim) · Makati',w:'Mar 2013 – Mar 2018',b:['Provided technical and HTML support for a live chat product.','Responded to all helpdesk tickets within 1 business day.','Processed refunds and kept support documentation current.']}
+];
+const tl=$('tl');
+jobs.forEach((j,i)=>{const d=document.createElement('div');d.className='job'+(j.now?' now':'');const open=i===0;
+  d.innerHTML=`<button type="button" id="job-${i}" aria-expanded="${open}" aria-controls="jd-${i}"><h3>${j.t}</h3><span class="when">${j.w} ▾</span><span class="org">${j.o}</span></button><ul id="jd-${i}"${open?'':' hidden'}>${j.b.map(x=>'<li>'+x+'</li>').join('')}</ul>`;
+  const btn=d.querySelector('button'),ul=d.querySelector('ul');btn.addEventListener('click',()=>{const o=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',String(!o));ul.hidden=o;tlProgress();});
+  tl.appendChild(d);});
+function tlProgress(){const r=tl.getBoundingClientRect();const vis=Math.min(Math.max((innerHeight*.7-r.top)/(r.height||1),0),1);$('tlFill').style.height=(vis*(r.height-12))+'px';}
+tlProgress();
+
+/* copy email */
+$('copyBtn').addEventListener('click',()=>{const txt=$('email').textContent,t=$('toast');
+  const sel=()=>{const r=document.createRange();r.selectNodeContents($('email'));const s=getSelection();s.removeAllRanges();s.addRange(r);t.textContent='Selected. Press Ctrl+C to copy.';};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>{t.textContent='Email copied.';},sel);}else sel();});
+})();
+</script>
+</body>
+</html>
